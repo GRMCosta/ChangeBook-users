@@ -1,4 +1,4 @@
-package com.projeto.changebookusers.config;
+package com.projeto.changebookusers.config.security;
 
 import com.projeto.changebookusers.service.ChangeBookDetailsService;
 import io.jsonwebtoken.Jwts;
@@ -28,7 +28,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String authorization_header = request.getHeader(SecurityConstraints.HEADER_STRING);
         if (authorization_header == null || authorization_header.startsWith(SecurityConstraints.TOKEN_PREFIX)){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            chain.doFilter(request, response);
         }
         UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(request);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
