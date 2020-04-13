@@ -24,4 +24,8 @@ public class UserService {
             throw new RuntimeException("invalid data.");
     }
 
+    public boolean existsUserById(String email){
+        return userRepository.existsByEmail(email);
+    }
+
 }

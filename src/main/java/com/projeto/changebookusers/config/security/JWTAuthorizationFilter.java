@@ -1,12 +1,18 @@
 package com.projeto.changebookusers.config.security;
 
 import com.projeto.changebookusers.service.ChangeBookDetailsService;
+import com.projeto.changebookusers.util.JwtTokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,36 +20,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+@Component
+public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-    private final ChangeBookDetailsService changeBookDetailsService;
+    @Autowired
+    private ChangeBookDetailsService changeBookDetailsService;
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, ChangeBookDetailsService changeBookDetailsService) {
-        super(authenticationManager);
-        this.changeBookDetailsService = changeBookDetailsService;
-    }
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String authorization_header = request.getHeader(SecurityConstraints.HEADER_STRING);
-        if (authorization_header == null || authorization_header.startsWith(SecurityConstraints.TOKEN_PREFIX)){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        String email = null;
+        if (authorization_header != null && authorization_header.startsWith(SecurityConstraints.TOKEN_PREFIX)){
+            authorization_header = authorization_header.substring(7);
         }
-        UsernamePasswordAuthenticationToken authenticationToken = getAuthenticationToken(request);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        try {
+            email = jwtTokenUtil.getUsernameFromToken(authorization_header);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Unable to get JWT Token");
+        } catch (ExpiredJwtException e) {
+            System.out.println("JWT Token has expired");
+        }
+        validateToken(request, authorization_header, email);
         chain.doFilter(request, response);
     }
-    private UsernamePasswordAuthenticationToken getAuthenticationToken(HttpServletRequest request){
-        String token = request.getHeader(SecurityConstraints.HEADER_STRING);
-        if (token == null) return null;
-        String email = Jwts.parser()
-                .setSigningKey(SecurityConstraints.SECRET)
-                .parseClaimsJws(token.replace(SecurityConstraints.TOKEN_PREFIX, ""))
-                .getBody()
-                .getSubject();
-        UserDetails userDetails = changeBookDetailsService.loadUserByUsername(email);
 
-        return email != null ? new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities()) : null;
+    private void validateToken(HttpServletRequest request, String authorization_header, String email) {
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = changeBookDetailsService.loadUserByUsername(email);
 
+            if (jwtTokenUtil.validateToken(authorization_header, userDetails)) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }
+        }
     }
 }

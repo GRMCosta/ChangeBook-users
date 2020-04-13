@@ -25,11 +25,15 @@ public class ChangeBookDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User changeBookUser = Optional.ofNullable(userRepository.findByEmail(email))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        if (userRepository.existsById(email)){
+            User changeBookUser = userRepository.findByEmail(email);
 
-        List<GrantedAuthority> role_user = AuthorityUtils.createAuthorityList("ROLE_USER");
+            List<GrantedAuthority> role_user = AuthorityUtils.createAuthorityList("ROLE_USER");
 
-        return new org.springframework.security.core.userdetails.User(changeBookUser.getEmail(), changeBookUser.getPassword(), role_user);
+            return new org.springframework.security.core.userdetails.User(changeBookUser.getEmail(), changeBookUser.getPassword(), role_user);
+
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
     }
 }
