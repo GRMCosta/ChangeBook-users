@@ -1,7 +1,7 @@
 package com.projeto.changebookusers.controller;
 
-import com.projeto.changebookusers.domain.ChangeBookUser;
-import com.projeto.changebookusers.service.ChangeBookUserService;
+import com.projeto.changebookusers.domain.User;
+import com.projeto.changebookusers.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,18 +13,18 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/change-book/v1/users")
-public class ChangeBookUsersController {
+public class UserController {
 
-    private ChangeBookUserService changeBookUserService;
+    private UserService userService;
 
     @Autowired
-    public ChangeBookUsersController(ChangeBookUserService changeBookUserService) {
-        this.changeBookUserService = changeBookUserService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> saveUser(@RequestBody @Valid ChangeBookUser user){
-        changeBookUserService.saveUser(user);
-        return ResponseEntity.accepted().body("");
+    public ResponseEntity<?> createUser(@RequestBody @Valid User user){
+        userService.saveUser(user);
+        return ResponseEntity.ok().body("");
     }
 }

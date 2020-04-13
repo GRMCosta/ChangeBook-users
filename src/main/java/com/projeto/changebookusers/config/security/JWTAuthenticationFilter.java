@@ -1,7 +1,7 @@
-package com.projeto.changebookusers.config;
+package com.projeto.changebookusers.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projeto.changebookusers.domain.ChangeBookUser;
+import com.projeto.changebookusers.domain.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +28,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            ChangeBookUser user = new ObjectMapper().readValue(request.getInputStream() , ChangeBookUser.class);
+            User user = new ObjectMapper().readValue(request.getInputStream() , User.class);
 
             return this.authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
@@ -38,7 +38,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws ServletException {
         String email =  authResult.getPrincipal().toString();
 
         String token = Jwts.builder()
