@@ -1,4 +1,4 @@
-package com.projeto.changebookusers.config;
+package com.projeto.changebookusers.config.security;
 
 public class SecurityConstraints {
 

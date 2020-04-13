@@ -1,4 +1,4 @@
-package com.projeto.changebookusers.config;
+package com.projeto.changebookusers.config.security;
 
 import com.projeto.changebookusers.service.ChangeBookDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
