@@ -6,7 +6,9 @@ import lombok.*;
 import org.dom4j.tree.AbstractEntity;
 import org.hibernate.validator.constraints.br.CPF;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -16,15 +18,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table
-public class User extends AbstractEntity implements Serializable {
+public class UserResponse {
 
     @JsonProperty("user_name")
     @NotBlank(message = Messages.NAME_IS_REQUIRED)
     private String userName;
 
-    @Column(unique = true)
     @CPF(message = Messages.CPF_IS_INVALID)
     @NotBlank(message = Messages.CPF_IS_REQUIRED)
     private String cpf;
@@ -36,9 +35,6 @@ public class User extends AbstractEntity implements Serializable {
     @Email
     @NotBlank(message = Messages.EMAIL_IS_REQUIRED)
     private String email;
-
-    @NotBlank(message = Messages.PASSWORD_IS_REQUIRED)
-    private String password;
 
     @NotBlank(message = Messages.PHONE_IS_REQUIRED)
     private String phone;
