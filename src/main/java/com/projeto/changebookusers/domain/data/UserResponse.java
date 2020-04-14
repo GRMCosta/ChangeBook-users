@@ -1,4 +1,4 @@
-package com.projeto.changebookusers.domain;
+package com.projeto.changebookusers.domain.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.projeto.changebookusers.config.Messages;

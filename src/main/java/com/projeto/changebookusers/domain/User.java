@@ -33,7 +33,7 @@ public class User extends AbstractEntity implements Serializable {
     private String city;
 
     @Id
-    @Email
+    @Email(message = Messages.EMAIL_IS_INVALID)
     @NotBlank(message = Messages.EMAIL_IS_REQUIRED)
     private String email;
 
