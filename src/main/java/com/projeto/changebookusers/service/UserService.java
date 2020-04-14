@@ -17,7 +17,7 @@ public class UserService {
     }
 
     public void saveUser(User user){
-        if (user != null){
+        if (user != null && existsUserById(user.getEmail())){
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             userRepository.save(user);
         }else

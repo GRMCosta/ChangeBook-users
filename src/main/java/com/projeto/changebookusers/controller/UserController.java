@@ -62,7 +62,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody User authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid User authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
         final UserDetails userDetails = changeBookDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
