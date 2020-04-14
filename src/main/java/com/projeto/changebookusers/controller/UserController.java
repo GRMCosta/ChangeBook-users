@@ -1,12 +1,12 @@
 package com.projeto.changebookusers.controller;
 
-import com.projeto.changebookusers.domain.JwtResponse;
+import com.projeto.changebookusers.domain.data.JwtResponse;
 import com.projeto.changebookusers.domain.User;
+import com.projeto.changebookusers.domain.data.LoginRequest;
 import com.projeto.changebookusers.service.ChangeBookDetailsService;
 import com.projeto.changebookusers.service.UserService;
 import com.projeto.changebookusers.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -62,10 +62,10 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid User authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid LoginRequest loginRequest) throws Exception {
+        authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         final UserDetails userDetails = changeBookDetailsService
-                .loadUserByUsername(authenticationRequest.getEmail());
+                .loadUserByUsername(loginRequest.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }

@@ -21,4 +21,6 @@ public final class Messages {
     public static final String PHONE_IS_REQUIRED = "412.6";
 
     public static final String CPF_IS_INVALID = "422.1";
+
+    public static final String EMAIL_IS_INVALID = "422.2";
 }
