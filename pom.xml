@@ -10,12 +10,15 @@
     </parent>
     <groupId>com.projeto</groupId>
     <artifactId>changebook-users</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.2.3.BUILD-SNAPSHOT</version>
     <name>changebook-users</name>
     <description>ChangeBook users Project</description>
 
     <properties>
         <java.version>11</java.version>
+        <gcp-libraries-bom.version>4.4.1</gcp-libraries-bom.version>
+        <cloud-sql-socket-factory.version>1.0.15</cloud-sql-socket-factory.version>
+        <java-cfenv.version>1.1.3.RELEASE</java-cfenv.version>
     </properties>
 
     <repositories>
@@ -24,6 +27,18 @@
             <url>https://mymavenrepo.com/repo/7Johze6KwSdIRfHF6KuQ/</url>
         </repository>
     </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-gcp-dependencies</artifactId>
+                <version>1.2.0.BUILD-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
 
@@ -38,16 +53,10 @@
             <version>2.1.4.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.grcosta</groupId>
             <artifactId>message-locator</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -64,10 +73,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
+            <version>1.2.2.RELEASE</version>
         </dependency>
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
