@@ -1,4 +1,4 @@
-package com.projeto.changebookusers.domain;
+package com.projeto.changebookusers.domain.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
