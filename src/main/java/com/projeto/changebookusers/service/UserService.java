@@ -17,6 +17,13 @@ public class UserService {
     }
 
     public void saveUser(User user){
+        if (user != null){
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            userRepository.save(user);
+        }else
+            throw new RuntimeException("invalid data.");
+    }
+    public void updateUser(User user){
         if (user != null && existsUserById(user.getEmail())){
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             userRepository.save(user);
