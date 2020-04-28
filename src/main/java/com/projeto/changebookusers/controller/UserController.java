@@ -54,6 +54,19 @@ public class UserController {
             return ResponseEntity.status(401).body("Token is not valid.");
     }
 
+    @GetMapping("/user/by_token")
+    public ResponseEntity<?> getUserByToken(@RequestHeader("Authorization") String token){
+        if (token == null || token.isEmpty() || token.isBlank())
+            return ResponseEntity.status(401).body("Token not found.");
+        token = token.substring(7);
+        String userName = jwtTokenUtil.getUsernameFromToken(token);
+        if (!jwtTokenUtil.isTokenExpired(token) && userService.existsUserById(userName))
+            return ResponseEntity.ok().body(userService.getUserById(userName));
+        else
+            return ResponseEntity.status(401).body("Token is not valid.");
+
+    }
+
     @PutMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody @Valid User user){
         userService.updateUser(user);
