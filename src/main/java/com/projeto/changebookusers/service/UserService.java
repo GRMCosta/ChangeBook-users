@@ -1,6 +1,7 @@
 package com.projeto.changebookusers.service;
 
 import com.projeto.changebookusers.domain.User;
+import com.projeto.changebookusers.domain.data.UserResponse;
 import com.projeto.changebookusers.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +30,16 @@ public class UserService {
             userRepository.save(user);
         }else
             throw new RuntimeException("invalid data.");
+    }
+
+    public UserResponse getUserById(String email){
+        User user = userRepository.findByEmail(email);
+        return UserResponse.builder()
+                .userName(user.getUserName())
+                .city(user.getCity())
+                .phone(user.getPhone())
+                .email(user.getEmail())
+                .build();
     }
 
     public boolean existsUserById(String email){
