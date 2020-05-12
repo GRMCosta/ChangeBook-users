@@ -36,6 +36,7 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         return UserResponse.builder()
                 .userName(user.getUserName())
+                .cpf(user.getCpf())
                 .city(user.getCity())
                 .phone(user.getPhone())
                 .email(user.getEmail())
