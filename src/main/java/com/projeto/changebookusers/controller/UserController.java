@@ -1,5 +1,7 @@
 package com.projeto.changebookusers.controller;
 
+import com.projeto.changebookusers.config.Messages;
+import com.projeto.changebookusers.config.exception.UserException;
 import com.projeto.changebookusers.domain.data.JwtResponse;
 import com.projeto.changebookusers.domain.User;
 import com.projeto.changebookusers.domain.data.LoginRequest;
@@ -89,7 +91,7 @@ public class UserController {
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new UserException(Messages.EMAIL_OR_PASSWORD_IS_INVALID);
         }
     }
 }

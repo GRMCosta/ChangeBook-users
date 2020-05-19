@@ -54,5 +54,19 @@
       "httpStatus": 422,
       "description": "cpf is invalid."
     }
+  },
+  {
+    "422.2": {
+      "code": "422.2",
+      "httpStatus": 422,
+      "description": "email is invalid."
+    }
+  },
+  {
+    "422.3": {
+      "code": "422.3",
+      "httpStatus": 422,
+      "description": "email or password is invalid."
+    }
   }
 ]
