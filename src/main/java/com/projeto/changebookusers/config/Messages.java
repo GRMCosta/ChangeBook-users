@@ -23,4 +23,8 @@ public final class Messages {
     public static final String CPF_IS_INVALID = "422.1";
 
     public static final String EMAIL_IS_INVALID = "422.2";
+
+    public static final String EMAIL_OR_PASSWORD_IS_INVALID = "422.3";
+
+
 }
