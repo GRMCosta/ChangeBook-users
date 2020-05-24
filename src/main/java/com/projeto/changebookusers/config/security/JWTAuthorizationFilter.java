@@ -32,18 +32,18 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String authorization_header = request.getHeader(SecurityConstraints.HEADER_STRING);
-        String email = null;
+        String cpf = null;
         if (authorization_header != null && authorization_header.startsWith(SecurityConstraints.TOKEN_PREFIX)){
             authorization_header = authorization_header.substring(7);
         }
         try {
-            email = jwtTokenUtil.getUsernameFromToken(authorization_header);
+            cpf = jwtTokenUtil.getUsernameFromToken(authorization_header);
         } catch (IllegalArgumentException e) {
             System.out.println("Unable to get JWT Token");
         } catch (ExpiredJwtException e) {
             System.out.println("JWT Token has expired");
         }
-        validateToken(request, authorization_header, email);
+        validateToken(request, authorization_header, cpf);
         chain.doFilter(request, response);
     }
 

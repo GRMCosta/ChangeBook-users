@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ChangeBookDetailsService implements UserDetailsService {
@@ -24,13 +23,13 @@ public class ChangeBookDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        if (userRepository.existsById(email)){
-            User changeBookUser = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
+        if (userRepository.existsById(cpf)){
+            User changeBookUser = userRepository.findByCpf(cpf);
 
             List<GrantedAuthority> role_user = AuthorityUtils.createAuthorityList("ROLE_USER");
 
-            return new org.springframework.security.core.userdetails.User(changeBookUser.getEmail(), changeBookUser.getPassword(), role_user);
+            return new org.springframework.security.core.userdetails.User(changeBookUser.getCpf(), changeBookUser.getPassword(), role_user);
 
         } else {
             throw new UsernameNotFoundException("User not found");

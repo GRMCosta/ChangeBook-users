@@ -78,9 +78,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid LoginRequest loginRequest) throws Exception {
-        authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        authenticate(loginRequest.getCpf(), loginRequest.getPassword());
         final UserDetails userDetails = changeBookDetailsService
-                .loadUserByUsername(loginRequest.getEmail());
+                .loadUserByUsername(loginRequest.getCpf());
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }
