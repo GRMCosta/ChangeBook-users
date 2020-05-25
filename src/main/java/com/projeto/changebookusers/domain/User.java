@@ -24,7 +24,7 @@ public class User extends AbstractEntity implements Serializable {
     @NotBlank(message = Messages.NAME_IS_REQUIRED)
     private String userName;
 
-    @Column(unique = true)
+    @Id
     @CPF(message = Messages.CPF_IS_INVALID)
     @NotBlank(message = Messages.CPF_IS_REQUIRED)
     private String cpf;
@@ -32,7 +32,7 @@ public class User extends AbstractEntity implements Serializable {
     @NotBlank(message = Messages.CITY_IS_REQUIRED)
     private String city;
 
-    @Id
+    @Column(unique = true)
     @Email(message = Messages.EMAIL_IS_INVALID)
     @NotBlank(message = Messages.EMAIL_IS_REQUIRED)
     private String email;
