@@ -5,6 +5,7 @@ import com.projeto.changebookusers.config.exception.UserException;
 import com.projeto.changebookusers.domain.data.JwtResponse;
 import com.projeto.changebookusers.domain.User;
 import com.projeto.changebookusers.domain.data.LoginRequest;
+import com.projeto.changebookusers.domain.data.UserUpdateRequest;
 import com.projeto.changebookusers.service.ChangeBookDetailsService;
 import com.projeto.changebookusers.service.UserService;
 import com.projeto.changebookusers.util.JwtTokenUtil;
@@ -70,7 +71,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid User user){
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UserUpdateRequest user){
         userService.updateUser(user);
         return ResponseEntity.ok().body("");
     }

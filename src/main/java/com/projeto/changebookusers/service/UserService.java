@@ -2,6 +2,7 @@ package com.projeto.changebookusers.service;
 
 import com.projeto.changebookusers.domain.User;
 import com.projeto.changebookusers.domain.data.UserResponse;
+import com.projeto.changebookusers.domain.data.UserUpdateRequest;
 import com.projeto.changebookusers.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,10 +25,11 @@ public class UserService {
         }else
             throw new RuntimeException("invalid data.");
     }
-    public void updateUser(User user){
-        if (user != null && existsUserById(user.getCpf())){
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            userRepository.save(user);
+    public void updateUser(UserUpdateRequest userUpdate){
+        if (userUpdate != null && existsUserById(userUpdate.getCpf())){
+            var user = userRepository.findByCpf(userUpdate.getCpf());
+            userUpdate.setPassword(user.getPassword());
+            userRepository.save(userUpdate.toUser());
         }else
             throw new RuntimeException("invalid data.");
     }
